@@ -2,6 +2,7 @@
     const gallery = document.getElementById("gallery");
     let usersList = {};
 
+    //request the users to the API
     function getUsers(){
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
@@ -18,7 +19,7 @@
             xhr.send();          
         });     
     }
-
+    //appends the 12 users to the gallery
     function appendUsers(users){
         const gallery = document.getElementById("gallery");
         let usersHTML = "";
@@ -40,7 +41,9 @@
         gallery.innerHTML = usersHTML;
     }
 
+    //gets the information of the card who triggered the event, add it to the modal and append it to the body
     function getInfo(event){
+        const body = document.querySelector("BODY");
         const modalContainer = document.createElement("DIV");
         modalContainer.setAttribute("class", "modal-container");
         let card = {},
@@ -91,10 +94,18 @@
                     </div>`;
 
         modalContainer.innerHTML = userModal;
-        document.querySelector("BODY").appendChild(modalContainer);
+        body.appendChild(modalContainer);
+
+        //closes the modal window
+        modalContainer.addEventListener("click", (event) => {
+            const closeButton = modalContainer.firstElementChild.firstElementChild;
+            //validates that the element who triggered the event was modalContainer, or closeButton, or the X inside the strong tags 
+            if(event.target === modalContainer || event.target === closeButton || event.target === closeButton.firstElementChild){
+                body.removeChild(modalContainer);
+            }
+        });
     }
 
-    
     getUsers()
         .then( users =>  {
             appendUsers(users);
