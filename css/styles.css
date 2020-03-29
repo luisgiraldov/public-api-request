@@ -16,7 +16,12 @@ html, body {
 body {
     font-family: "Nunito", sans-serif;
     text-align: center;
-    background: rgba(235, 235, 235, 0.9);
+    /* background: rgba(235, 235, 235, 0.9); */
+    background: linear-gradient(
+    rgba(0, 0, 0, 0.5),
+    rgba(0, 0, 0, 0.5)
+    ),
+    url("../images/abstract-art-artistic-background.jpg") no-repeat center;
 }
 
 header {
