@@ -2,6 +2,36 @@
     const gallery = document.getElementById("gallery");
     let usersList = {};
 
+    //helper functions
+    //receives the date sent from the API, removes the time from it, and rerange the date in MM/DD/YYYY
+    function getDateMoDayYear(date){
+        const originalFormat = date.slice(0, date.indexOf("T"));
+        const separateDate = originalFormat.split("-");
+        const newFormat = separateDate[1] + "/" + separateDate[2] + "/"+ separateDate[0];
+        return newFormat;
+    }
+
+    //create the modal to display
+    function createModal(userData){
+        return `<div class="modal">
+                        <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+                        <div class="modal-info-container">
+                            <img class="modal-img" src="${userData.picture.large}" alt="profile picture">
+                            <h3 id="${userData.name.first}.${userData.name.last}" class="modal-name cap">${userData.name.first} ${userData.name.last}</h3>
+                            <p class="modal-text">${userData.email}</p>
+                            <p class="modal-text cap">${userData.location.city}</p>
+                            <hr>
+                            <p class="modal-text">${userData.phone}</p>
+                            <p class="modal-text">${userData.location.street.number} ${userData.location.street.name}, ${userData.location.city}, ${userData.location.state} ${userData.location.postcode}</p>
+                            <p class="modal-text">Birthday: ${getDateMoDayYear(userData.dob.date)}</p>
+                        </div>
+                    </div>
+                    <div class="modal-btn-container">
+                        <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
+                        <button type="button" id="modal-next" class="modal-next btn">Next</button>
+                    </div>`;
+    }
+
     //request the users to the API
     function getUsers(){
         return new Promise((resolve, reject) => {
@@ -25,6 +55,7 @@
         let usersHTML = "";
         users.results.map( user => {
             const card = `<div class="card">
+                            <div class="overlay"></div>
                             <div class="card-img-container">
                                 <img class="card-img" src="${user.picture.large}" alt="profile picture">
                             </div>
@@ -49,7 +80,7 @@
         let card = {},
             h3Id = null,
             userData = {},
-            userModal = "";
+            userPosition = null;
         if(event.target === "H3"){
             h3Id = event.target.getAttribute("id");
         } else if(event.target.classList.contains("card")){
@@ -67,33 +98,16 @@
         userData = usersList.results.filter(user => {
             const userId = `${user.name.first}.${user.name.last}`;
             if(userId === h3Id){
+                userPosition = usersList.results.indexOf(user);
                 return true;
             } else {
                 return false
             }
         });
 
-        userModal = `<div class="modal">
-                        <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
-                        <div class="modal-info-container">
-                            <img class="modal-img" src="${userData[0].picture.large}" alt="profile picture">
-                            <h3 id="name" class="modal-name cap">name</h3>
-                            <p class="modal-text">email</p>
-                            <p class="modal-text cap">city</p>
-                            <hr>
-                            <p class="modal-text">(555) 555-5555</p>
-                            <p class="modal-text">123 Portland Ave., Portland, OR 97204</p>
-                            <p class="modal-text">Birthday: 10/21/2015</p>
-                        </div>
-                    </div>
+        userData = {...userData[0]};
 
-                    <!-- IMPORTANT: Below is only for exceeds tasks -->
-                    <div class="modal-btn-container">
-                        <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
-                        <button type="button" id="modal-next" class="modal-next btn">Next</button>
-                    </div>`;
-
-        modalContainer.innerHTML = userModal;
+        modalContainer.innerHTML = createModal(userData);
         body.appendChild(modalContainer);
 
         //closes the modal window
@@ -102,6 +116,23 @@
             //validates that the element who triggered the event was modalContainer, or closeButton, or the X inside the strong tags 
             if(event.target === modalContainer || event.target === closeButton || event.target === closeButton.firstElementChild){
                 body.removeChild(modalContainer);
+            }
+
+            //previous next
+            if(event.target.tagName === "BUTTON"){
+                if(event.target.getAttribute("id") === "modal-prev"){
+                   console.log(userPosition);
+                   console.log(usersList.results);
+                   console.log(usersList.results[userPosition - 1]);
+                   modalContainer.innerHTML = createModal(usersList.results[userPosition - 1]);
+
+                } else if(event.target.getAttribute("id") === "modal-next"){
+                   console.log(userPosition);
+                   console.log(usersList.results);
+                   console.log(usersList.results[userPosition + 1]);
+                   modalContainer.innerHTML = createModal(usersList.results[userPosition + 1])
+                }
+                console.log("entro");
             }
         });
     }
@@ -118,5 +149,4 @@
                 getInfo(event);
             }
     });
-    
 })();
