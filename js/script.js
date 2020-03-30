@@ -2,6 +2,13 @@
     const gallery = document.getElementById("gallery");
     let usersList = {};
 
+    //adding search-bar
+    const searchContainer = document.querySelector(".search-container");
+    searchContainer.innerHTML = `<form action="#" method="get">
+                                    <input type="search" id="search-input" class="search-input" placeholder="Search...">
+                                    <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
+                                </form>`;
+
     //helper functions
     //receives the date sent from the API, removes the time from it, and rerange the date in MM/DD/YYYY
     function getDateMoDayYear(date){
@@ -49,6 +56,7 @@
             xhr.send();          
         });     
     }
+
     //appends the 12 users to the gallery
     function appendUsers(users){
         const gallery = document.getElementById("gallery");
@@ -105,6 +113,7 @@
             }
         });
 
+        //use spread operator to pass the array to an object, because filter returns an array
         userData = {...userData[0]};
 
         modalContainer.innerHTML = createModal(userData);
@@ -124,15 +133,19 @@
                    console.log(userPosition);
                    console.log(usersList.results);
                    console.log(usersList.results[userPosition - 1]);
-                   modalContainer.innerHTML = createModal(usersList.results[userPosition - 1]);
-
+                   if(userPosition > 0){
+                        modalContainer.innerHTML = createModal(usersList.results[userPosition - 1]);
+                        userPosition -= 1;
+                   }
                 } else if(event.target.getAttribute("id") === "modal-next"){
                    console.log(userPosition);
                    console.log(usersList.results);
                    console.log(usersList.results[userPosition + 1]);
-                   modalContainer.innerHTML = createModal(usersList.results[userPosition + 1])
+                   if(userPosition < usersList.results.length - 1){
+                        modalContainer.innerHTML = createModal(usersList.results[userPosition + 1]);
+                        userPosition += 1;
+                   }
                 }
-                console.log("entro");
             }
         });
     }
