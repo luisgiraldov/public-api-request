@@ -150,7 +150,6 @@ header h1 {
     text-transform: none;
 }
 
-
 /* ===================================== 
    Modal
 ======================================== */
@@ -306,3 +305,66 @@ header h1 {
         transform: scale(4) translateZ(0);
     }
 }
+
+
+/* ===================================== 
+   Helper Classes
+======================================== */
+/* Learned from: https://codepen.io/palimadra/pen/OVvbaY */
+.error {
+    border: 1px solid;
+    margin: 50px;
+    padding: 15px 10px 15px 50px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    color: #D8000C;
+    background-color: #FFBABA;
+    background-image: url('https://i.imgur.com/GnyDvKN.png');
+}
+
+.hidden {
+    display: none;
+}
+
+/* prueba */
+.words-container {
+    display:inline-block;
+    overflow:hidden;
+    white-space:nowrap;
+  }
+  
+  .first-word {
+    animation: showup 7s 2;
+  }
+  
+  .phrase-container {
+    width:0px;
+    animation: reveal 7s 2;
+  }
+  
+  .phrase {
+    margin-left:-355px;
+    animation: slidein 7s 2;
+  }
+  
+  @keyframes showup {
+      0% {opacity:0;}
+      20% {opacity:1;}
+      80% {opacity:1;}
+      100% {opacity:0;}
+  }
+  
+  @keyframes slidein {
+      0% { margin-left:-800px; }
+      20% { margin-left:-800px; }
+      35% { margin-left:0px; }
+      100% { margin-left:0px; }
+  }
+  
+  @keyframes reveal {
+      0% {opacity:0;width:0px;}
+      20% {opacity:1;width:0px;}
+      30% {width:355px;}
+      80% {opacity:1;}
+      100% {opacity:0;width:355px;}
+  }

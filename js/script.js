@@ -3,7 +3,6 @@
     let searchBar = null;
     let usersList = {};
     
-
     //adding search-bar
     const searchContainer = document.querySelector(".search-container");
     searchContainer.innerHTML = `<form action="#" method="get">
@@ -35,29 +34,30 @@
     * `searchBarCallback` function
     * @param {String} - holds the string the user typed into the search bar
     * This function calls replaceSpecialCharacters to replace html entities and special characters
-    * Calls findStudents to get the students that match the query from the user
+    * Calls findUsers to get the students that match the query from the user
     * Appends new pagination links
     * Display new List of students based on user's query
     ***/
     function searchBarCallback(userInput){
         if(userInput !== ""){
             const sanitizedInput = replaceSpecialCharacters(userInput);
-            findStudents(sanitizedInput);
+            findUsers(sanitizedInput);
         } else if(userInput === ""){
             removingHighlightSpan();
-            findStudents("");
+            findUsers("");
         }
     }
 
     /***
-    * `findStudents` function
+    * `findUsers` function
     * Returns array with students that match the query made by the user 
     * @param {String} - Holds the input from the user
     * Everytime creates a new regex based on the user input
     * Search for students that match the pattern and save them into an array
     ***/
-    function findStudents(userQuery){
+    function findUsers(userQuery){
         const cards = document.querySelectorAll(".card");
+        const divError = document.getElementById("error");
         const regex = new RegExp(`^.*${userQuery}.*$`, "i");
         const regexForSelection = new RegExp(`${userQuery.toLowerCase()}`, "ig");
         let found = "",
@@ -67,7 +67,11 @@
             cards[a].style.display = "none";
         }
 
+        //every iteration hides the error message
+        divError.classList.add("hidden");
+
         if(userQuery !== ""){
+            const usersFound = [];
             for(let i = 0, len2 = cards.length; i < len2; i++){
                 const fullName = cards[i].lastElementChild.firstElementChild;
                 if(regex.test(fullName.textContent)){
@@ -76,18 +80,23 @@
                      * Add span tag to highlight the text
                      */
                     found = fullName.textContent.match(regexForSelection);
-                    console.log(found);
                     stringMatched = fullName.textContent.replace(found[0], `<span class="js-stringMatched stringMatched">${found[0]}</span>`);
                     fullName.innerHTML = stringMatched;
+                    usersFound.push(fullName);
                 };
             }//end for
+            
+            //if not result is found hide cards and display a sorry message
+            if(!usersFound.length > 0){
+                divError.classList.remove("hidden");
+            }
         }// end if
         else if(userQuery === ""){
             for(let a = 0, len = cards.length; a < len; a++){
                 cards[a].style.display = "";
             }
         } //end else if
-    }// end findStudents
+    }// end findUsers
 
     /***
     * `removingHighlightSpan` function 
@@ -218,17 +227,11 @@
             //previous next
             if(event.target.tagName === "BUTTON"){
                 if(event.target.getAttribute("id") === "modal-prev"){
-                   console.log(userPosition);
-                   console.log(usersList.results);
-                   console.log(usersList.results[userPosition - 1]);
                    if(userPosition > 0){
                         modalContainer.innerHTML = createModal(usersList.results[userPosition - 1]);
                         userPosition -= 1;
                    }
                 } else if(event.target.getAttribute("id") === "modal-next"){
-                   console.log(userPosition);
-                   console.log(usersList.results);
-                   console.log(usersList.results[userPosition + 1]);
                    if(userPosition < usersList.results.length - 1){
                         modalContainer.innerHTML = createModal(usersList.results[userPosition + 1]);
                         userPosition += 1;
@@ -271,5 +274,12 @@
         event.target.value = "";
         searchBarCallback(event.target.value);
     });
-    
+
+    //after animation put the title in its normal state
+    window.onload = (event) => {
+        setTimeout( () => {
+            const header = document.querySelector(".header-text-container");
+            header.innerHTML = "<h1>AWESOME STARTUP EMPLOYEE DIRECTORY</h1>";
+        }, 20000);
+    };
 })();
