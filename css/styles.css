@@ -103,21 +103,10 @@ header h1 {
     --box-shadow-color: rgba(220, 233, 255, 0.48);
 
     position: relative;
-    box-shadow: 0 14px 26px rgba(0,0,0,0.1);
+    /* box-shadow: 0 14px 26px rgba(0,0,0,0.1); */
     transition: all 0.3s ease-out;
     
 }
-/* Blue circle effect, learned from https://codepen.io/jorgesanes10/pen/QdMEXr */
-.overlay {
-    visibility: hidden;
-    width: 120px;
-    position: absolute; 
-    height: 120px;
-    border-radius: 50%;
-    background: var(--bg-color);
-    z-index: -1000;
-    transition: transform 0.3s ease-out;
-  }
 
 .card-img {
     width: 95px;
@@ -140,8 +129,25 @@ header h1 {
     transition: .4s ease-out;
 }
 
-.cap {
+/* .cap {
     text-transform: capitalize;
+} */
+
+/* Blue circle effect, learned from https://codepen.io/jorgesanes10/pen/QdMEXr */
+.overlay {
+    visibility: hidden;
+    width: 120px;
+    position: absolute; 
+    height: 120px;
+    border-radius: 50%;
+    background: var(--bg-color);
+    z-index: -1000;
+    transition: transform 0.3s ease-out;
+}
+
+.stringMatched{
+    background-color: #dcdcdc;
+    text-transform: none;
 }
 
 

@@ -1,6 +1,8 @@
 (function(){
     const gallery = document.getElementById("gallery");
+    let searchBar = null;
     let usersList = {};
+    
 
     //adding search-bar
     const searchContainer = document.querySelector(".search-container");
@@ -10,12 +12,96 @@
                                 </form>`;
 
     //helper functions
+
+    /*** 
+    * `replaceSpecialCharacters` function
+    * Returns a string without HTML entities or special characters
+    * @param {String} userInput - Holds the string value the user typed into the search bar
+    * Find any HTML entity and replace with an empty string, simulates a basic html sanitizer, and avoid creating an unexpected regex.
+    ***/
+    function replaceSpecialCharacters(userInput){
+        return userInput.replace(/[\!\@\#\$\%\^\&\*\(\)\+\=\~\`\<\>\"\/\|\\\?]/gm, "sorry we couldn't find anyhting keep looking!");
+    }
+    
     //receives the date sent from the API, removes the time from it, and rerange the date in MM/DD/YYYY
     function getDateMoDayYear(date){
         const originalFormat = date.slice(0, date.indexOf("T"));
         const separateDate = originalFormat.split("-");
         const newFormat = separateDate[1] + "/" + separateDate[2] + "/"+ separateDate[0];
         return newFormat;
+    }
+
+    /***
+    * `searchBarCallback` function
+    * @param {String} - holds the string the user typed into the search bar
+    * This function calls replaceSpecialCharacters to replace html entities and special characters
+    * Calls findStudents to get the students that match the query from the user
+    * Appends new pagination links
+    * Display new List of students based on user's query
+    ***/
+    function searchBarCallback(userInput){
+        if(userInput !== ""){
+            const sanitizedInput = replaceSpecialCharacters(userInput);
+            findStudents(sanitizedInput);
+        } else if(userInput === ""){
+            removingHighlightSpan();
+            findStudents("");
+        }
+    }
+
+    /***
+    * `findStudents` function
+    * Returns array with students that match the query made by the user 
+    * @param {String} - Holds the input from the user
+    * Everytime creates a new regex based on the user input
+    * Search for students that match the pattern and save them into an array
+    ***/
+    function findStudents(userQuery){
+        const cards = document.querySelectorAll(".card");
+        const regex = new RegExp(`^.*${userQuery}.*$`, "i");
+        const regexForSelection = new RegExp(`${userQuery.toLowerCase()}`, "ig");
+        let found = "",
+            stringMatched = "";
+
+        for(let a = 0, len = cards.length; a < len; a++){
+            cards[a].style.display = "none";
+        }
+
+        if(userQuery !== ""){
+            for(let i = 0, len2 = cards.length; i < len2; i++){
+                const fullName = cards[i].lastElementChild.firstElementChild;
+                if(regex.test(fullName.textContent)){
+                    cards[i].style.display = "";            
+                    /**
+                     * Add span tag to highlight the text
+                     */
+                    found = fullName.textContent.match(regexForSelection);
+                    console.log(found);
+                    stringMatched = fullName.textContent.replace(found[0], `<span class="js-stringMatched stringMatched">${found[0]}</span>`);
+                    fullName.innerHTML = stringMatched;
+                };
+            }//end for
+        }// end if
+        else if(userQuery === ""){
+            for(let a = 0, len = cards.length; a < len; a++){
+                cards[a].style.display = "";
+            }
+        } //end else if
+    }// end findStudents
+
+    /***
+    * `removingHighlightSpan` function 
+    * Removes all the span tags added to the match that is found from the regex
+    ***/
+    function removingHighlightSpan(){
+        const spanTags = document.querySelectorAll(".js-stringMatched");
+        let text = "";
+        
+        for (let i = 0, len = spanTags.length; i < len; i++){
+            let h3 = spanTags[i].parentNode;
+            text = h3.textContent;
+            h3.innerHTML = text;
+        }
     }
 
     //create the modal to display
@@ -40,10 +126,12 @@
     }
 
     //request the users to the API
-    function getUsers(){
+    function getUsers(queryString){
+        let url = "";
+        queryString === "spanish"? url = "https://randomuser.me/api/?results=12&nat=es" : url = "https://randomuser.me/api/?results=12&nat=au,ca,us,nz";
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
-            xhr.open("GET", "https://randomuser.me/api/?results=12");
+            xhr.open("GET", url);
             xhr.onload = () => {
                 if(xhr.status === 200){
                     const data = JSON.parse(xhr.responseText);
@@ -150,7 +238,7 @@
         });
     }
 
-    getUsers()
+    getUsers("")
         .then( users =>  {
             appendUsers(users);
             usersList = users;
@@ -162,4 +250,26 @@
                 getInfo(event);
             }
     });
+
+    //submit event to request spanish users, it only works when spanish language is specified, it doesn't support any other language yet.
+    searchContainer.addEventListener("submit", (event) => {
+        const input = replaceSpecialCharacters(document.getElementById("search-input").value.toLowerCase());
+        if(input === "spanish" || input === "english"){
+            getUsers(input)
+                .then( users =>  {
+                        appendUsers(users);
+                        usersList = users;
+                })
+                .catch( err =>   console.error(err));
+        }// end if
+    });//end submit event
+
+    //handle events fired from the search bar, the search event is to clear the value of the input field and brings all users again
+    searchBar = document.getElementById("search-input");
+    searchBar.addEventListener("keyup", event => searchBarCallback(event.target.value.toLowerCase()) );
+    searchBar.addEventListener("search", event => {
+        event.target.value = "";
+        searchBarCallback(event.target.value);
+    });
+    
 })();
