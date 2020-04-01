@@ -275,14 +275,6 @@
         searchBarCallback(event.target.value);
     });
 
-    //after animation put the title in its normal state
-    // window.onload = (event) => {
-    //     setTimeout( () => {
-    //         const header = document.querySelector(".header-text-container");
-    //         header.innerHTML = "<h1>AWESOME STARTUP EMPLOYEE DIRECTORY</h1>";
-    //     }, 5000);
-    // };
-
     window.addEventListener("load", () => {
         document.querySelector("body").classList.add("loaded"); 
     });

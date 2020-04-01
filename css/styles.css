@@ -330,50 +330,7 @@ header h1 {
     display: none;
 }
 
-/* prueba */
-.words-container {
-    display:inline-block;
-    overflow:hidden;
-    white-space:nowrap;
-  }
-  
-  .first-word {
-    animation: showup 7s 2;
-  }
-  
-  .phrase-container {
-    width:0px;
-    animation: reveal 7s 2;
-  }
-  
-  .phrase {
-    margin-left:-355px;
-    animation: slidein 7s 2;
-  }
-  
-  @keyframes showup {
-      0% {opacity:0;}
-      20% {opacity:1;}
-      80% {opacity:1;}
-      100% {opacity:0;}
-  }
-  
-  @keyframes slidein {
-      0% { margin-left:-800px; }
-      20% { margin-left:-800px; }
-      35% { margin-left:0px; }
-      100% { margin-left:0px; }
-  }
-  
-  @keyframes reveal {
-      0% {opacity:0;width:0px;}
-      20% {opacity:1;width:0px;}
-      30% {width:355px;}
-      80% {opacity:1;}
-      100% {opacity:0;width:355px;}
-  }
-
-  /* revealing page effect */
+/* revealing page effect */
 
 .page-header .header-inner-container > *,
 .page-main {
@@ -446,3 +403,5 @@ header h1 {
       transform: translateY(0);
     }
   }
+
+
