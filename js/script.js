@@ -10,6 +10,12 @@
                                     <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
                                 </form>`;
 
+    //adding modal window                       
+    const modalContainer = document.createElement("DIV");
+    modalContainer.setAttribute("class", "modal-container");
+    const body = document.querySelector("BODY");
+    body.appendChild(modalContainer);
+
     //helper functions
 
     /*** 
@@ -116,22 +122,22 @@
     //create the modal to display
     function createModal(userData){
         return `<div class="modal">
-                        <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
-                        <div class="modal-info-container">
-                            <img class="modal-img" src="${userData.picture.large}" alt="profile picture">
-                            <h3 id="${userData.name.first}.${userData.name.last}" class="modal-name cap">${userData.name.first} ${userData.name.last}</h3>
-                            <p class="modal-text">${userData.email}</p>
-                            <p class="modal-text cap">${userData.location.city}</p>
-                            <hr>
-                            <p class="modal-text">${userData.phone}</p>
-                            <p class="modal-text">${userData.location.street.number} ${userData.location.street.name}, ${userData.location.city}, ${userData.location.state} ${userData.location.postcode}</p>
-                            <p class="modal-text">Birthday: ${getDateMoDayYear(userData.dob.date)}</p>
-                        </div>
+                    <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+                    <div class="modal-info-container">
+                        <img class="modal-img" src="${userData.picture.large}" alt="profile picture">
+                        <h3 id="${userData.name.first}.${userData.name.last}" class="modal-name cap">${userData.name.first} ${userData.name.last}</h3>
+                        <p class="modal-text">${userData.email}</p>
+                        <p class="modal-text cap">${userData.location.city}</p>
+                        <hr>
+                        <p class="modal-text">${userData.phone}</p>
+                        <p class="modal-text">${userData.location.street.number} ${userData.location.street.name}, ${userData.location.city}, ${userData.location.state} ${userData.location.postcode}</p>
+                        <p class="modal-text">Birthday: ${getDateMoDayYear(userData.dob.date)}</p>
                     </div>
-                    <div class="modal-btn-container">
-                        <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
-                        <button type="button" id="modal-next" class="modal-next btn">Next</button>
-                    </div>`;
+                </div>
+                <div class="modal-btn-container">
+                    <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
+                    <button type="button" id="modal-next" class="modal-next btn">Next</button>
+                </div>`;
     }
 
     //request the users to the API
@@ -179,9 +185,9 @@
 
     //gets the information of the card who triggered the event, add it to the modal and append it to the body
     function getInfo(event){
-        const body = document.querySelector("BODY");
-        const modalContainer = document.createElement("DIV");
-        modalContainer.setAttribute("class", "modal-container");
+        // const body = document.querySelector("BODY");
+        // const modalContainer = document.createElement("DIV");
+        // modalContainer.setAttribute("class", "modal-container");
         let card = {},
             h3Id = null,
             userData = {},
@@ -212,16 +218,19 @@
 
         //use spread operator to pass the array to an object, because filter returns an array
         userData = {...userData[0]};
-
         modalContainer.innerHTML = createModal(userData);
-        body.appendChild(modalContainer);
-
+        // body.appendChild(modalContainer);
+        setTimeout( () => {
+            modalContainer.classList.add("is-open");
+        }, 100);
+ 
         //closes the modal window
         modalContainer.addEventListener("click", (event) => {
             const closeButton = modalContainer.firstElementChild.firstElementChild;
             //validates that the element who triggered the event was modalContainer, or closeButton, or the X inside the strong tags 
             if(event.target === modalContainer || event.target === closeButton || event.target === closeButton.firstElementChild){
-                body.removeChild(modalContainer);
+                modalContainer.classList.remove("is-open");
+                // body.removeChild(modalContainer);  
             }
 
             //previous next
@@ -239,6 +248,14 @@
                 }
             }
         });
+
+        //trigger animation
+        
+        // modalContainer.style.animation = 'none';
+        // modalContainer.offsetHeight; /* trigger reflow */
+        // modalContainer.style.animation = null;
+        // modalContainer.classList.add("is-open");
+
     }
 
     getUsers("")
@@ -278,5 +295,4 @@
     window.addEventListener("load", () => {
         document.querySelector("body").classList.add("loaded"); 
     });
-    
 })();

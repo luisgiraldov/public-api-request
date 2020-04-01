@@ -137,18 +137,6 @@ header h1 {
     text-transform: capitalize;
 } */
 
-/* Blue circle effect, learned from https://codepen.io/jorgesanes10/pen/QdMEXr */
-.overlay {
-    visibility: hidden;
-    width: 120px;
-    position: absolute; 
-    height: 120px;
-    border-radius: 50%;
-    background: var(--bg-color);
-    z-index: -1000;
-    transition: transform 0.3s ease-out;
-}
-
 .stringMatched{
     background-color: #dcdcdc;
     text-transform: none;
@@ -165,6 +153,7 @@ header h1 {
     bottom: 0;
     left: 0;
     background: rgba(0, 0, 0, 0.7);
+    display: none;
 }
 
 .modal {
@@ -239,7 +228,11 @@ header h1 {
     border-radius: 0.35em;
     transition: .4s ease-out;
     outline: none;
-  }
+}
+
+.is-open {
+    display: block;
+}
   
 
 /* ===================================== 
@@ -296,6 +289,18 @@ header h1 {
         color: rgba(25, 25, 25, 1); 
     } */
 
+    /* Blue circle effect, learned from https://codepen.io/jorgesanes10/pen/QdMEXr */
+    .overlay {
+        visibility: hidden;
+        width: 120px;
+        position: absolute; 
+        height: 120px;
+        border-radius: 50%;
+        background: var(--bg-color);
+        z-index: -1000;
+        transition: transform 0.3s ease-out;
+    }
+
     /* 3d effect, learned from https://codepen.io/jorgesanes10/pen/QdMEXr */
     .card:hover {
         transform: translateY(-5px) scale(1.005) translateZ(0);
@@ -308,6 +313,94 @@ header h1 {
         visibility: visible;
         transform: scale(4) translateZ(0);
     }
+
+    /* Modal animation learned from https://www.instagram.com/p/Bz0rotvART6/?igshid=1df4nt0pkh52p*/
+    .modal-container {
+        display: block;
+        transform: translateY(-250%);
+        opacity: 0;
+        transition: all .7s ease;
+    }
+    
+    .modal-container.is-open {
+        transform: translateY(0%);
+        opacity: 1;
+        transition: all .7s ease;
+    }
+
+    /* revealing page effect learned from https://webdesign.tutsplus.com/tutorials/quick-tip-how-to-enhance-a-page-with-css-animations--cms-32100*/
+    .page-header .header-inner-container > *,
+    .page-main {
+        opacity: 0;
+    }
+
+    .page-header,
+    .page-main .text-wrapper {
+        overflow: hidden;
+    }
+
+    .page-header .header-inner-container > * {
+        transform: translateY(-30px);
+    }
+
+    .page-header {
+        position: relative;
+    }
+    
+    .page-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--text-color-hover);
+        z-index: 99999;
+        transform: scaleX(0);
+    }
+
+    .page-main {
+        margin-top: 20px;
+    }
+
+    .page-main .text-wrapper * {
+        transform: translateY(120%);
+    }
+
+    .loaded .page-header::after {
+        animation: scaleIn 1.3s ease-in 0.2s forwards;
+    }
+    
+    @keyframes scaleIn {
+        100% {
+            transform: scaleX(1);
+        }
+    }
+
+    .loaded .page-main {
+        animation: fadeIn 1s ease-in 0.7s forwards;
+    }
+
+    .page-header .header-inner-container > *  {
+        animation: fadeIn 1s ease-in 0.7s forwards, slideIn 0.8s ease-in 0.9s forwards;
+    }
+
+    @keyframes fadeIn {
+        60% {
+        opacity: 0;
+        }
+        
+        100% {
+        opacity: 1;
+        }
+    }
+
+    @keyframes slideIn {
+        100% {
+        transform: translateY(0);
+        }
+    }
+  
 }
 
 
@@ -329,79 +422,5 @@ header h1 {
 .hidden {
     display: none;
 }
-
-/* revealing page effect */
-
-.page-header .header-inner-container > *,
-.page-main {
-  opacity: 0;
-}
-
-.page-header,
-.page-main .text-wrapper {
-  overflow: hidden;
-}
-
-.page-header .header-inner-container > * {
-    transform: translateY(-30px);
-}
-
-.page-header {
-    position: relative;
-}
-   
-.page-header::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: var(--text-color-hover);
-    z-index: 99999;
-    transform: scaleX(0);
-}
-
-.page-main {
-    margin-top: 20px;
-}
-
-.page-main .text-wrapper * {
-    transform: translateY(120%);
-}
-
-.loaded .page-header::after {
-    animation: scaleIn 1.3s ease-in 0.2s forwards;
-  }
-   
-@keyframes scaleIn {
-    100% {
-        transform: scaleX(1);
-    }
-}
-
-.loaded .page-main {
-    animation: fadeIn 1s ease-in 0.7s forwards;
-}
-
-.page-header .header-inner-container > *  {
-  animation: fadeIn 1s ease-in 0.7s forwards, slideIn 0.8s ease-in 0.9s forwards;
-}
-
-@keyframes fadeIn {
-    60% {
-      opacity: 0;
-    }
-     
-    100% {
-      opacity: 1;
-    }
-  }
-
-  @keyframes slideIn {
-    100% {
-      transform: translateY(0);
-    }
-  }
 
 
