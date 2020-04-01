@@ -158,8 +158,9 @@
     function appendUsers(users){
         const gallery = document.getElementById("gallery");
         let usersHTML = "";
+    
         users.results.map( user => {
-            const card = `<div class="card">
+            const card = `<div class="card text-wraper">
                             <div class="overlay"></div>
                             <div class="card-img-container">
                                 <img class="card-img" src="${user.picture.large}" alt="profile picture">
@@ -170,7 +171,6 @@
                                 <p class="card-text cap">${user.location.city}, ${user.location.state}</p>
                             </div>
                         </div>`;
-            
             usersHTML += card;
             console.log(user);
         });
@@ -276,10 +276,15 @@
     });
 
     //after animation put the title in its normal state
-    window.onload = (event) => {
-        setTimeout( () => {
-            const header = document.querySelector(".header-text-container");
-            header.innerHTML = "<h1>AWESOME STARTUP EMPLOYEE DIRECTORY</h1>";
-        }, 20000);
-    };
+    // window.onload = (event) => {
+    //     setTimeout( () => {
+    //         const header = document.querySelector(".header-text-container");
+    //         header.innerHTML = "<h1>AWESOME STARTUP EMPLOYEE DIRECTORY</h1>";
+    //     }, 5000);
+    // };
+
+    window.addEventListener("load", () => {
+        document.querySelector("body").classList.add("loaded"); 
+    });
+    
 })();
