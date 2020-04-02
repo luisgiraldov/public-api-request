@@ -9,6 +9,10 @@ this is an app for a fictional company called Awesome Startup, a distributed com
 * **Robert Manolis** - *Initial work* - [Teamtreehouse](https://teamtreehouse.com)
 * **Luis Giraldo** - *Functional Logic, Animations, Styling* - [Building Portfolio](https://luisgiraldov.com)
 
+## Built With
+
+* [Randomuser](https://randomuser.me/) - Used to generate list of users
+
 ## Acknowledgments
 
 * Inspiration - [Error Message](https://codepen.io/palimadra/pen/OVvbaY)
