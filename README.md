@@ -9,10 +9,6 @@ this is an app for a fictional company called Awesome Startup, a distributed com
 * **Robert Manolis** - *Initial work* - [Teamtreehouse](https://teamtreehouse.com)
 * **Luis Giraldo** - *Functional Logic, Animations, Styling* - [Building Portfolio](https://luisgiraldov.com)
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
 ## Acknowledgments
 
 * Inspiration - [Error Message](https://codepen.io/palimadra/pen/OVvbaY)
