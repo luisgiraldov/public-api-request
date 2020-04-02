@@ -19,3 +19,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
               - [Animation](https://webdesign.tutsplus.com/tutorials/quick-tip-how-to-enhance-a-page-with-css-animations--cms-32100*/)
               - [Modal Animation](https://www.instagram.com/p/Bz0rotvART6/?igshid=1df4nt0pkh52p*/)
               - [Hover Animation](https://codepen.io/jorgesanes10/pen/QdMEXr*/)
+* Background  - [Pexels](https://www.pexels.com/)
