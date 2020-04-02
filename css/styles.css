@@ -233,6 +233,13 @@ header h1 {
 .is-open {
     display: block;
 }
+
+#modal-prev:hover,
+#modal-next:hover {
+    cursor: pointer;
+    background-color: var(--bg-color);
+    color: rgba(0, 0, 0, 0.8);
+}
   
 
 /* ===================================== 
@@ -422,5 +429,3 @@ header h1 {
 .hidden {
     display: none;
 }
-
-
